@@ -3,7 +3,7 @@ class CreatePlans < ActiveRecord::Migration[6.0]
     create_table :plans do |t|
       t.string :plan
       t.date :date
-      t.string :dayofweek
+      # t.string :dayofweek
       t.timestamps
     end
   end

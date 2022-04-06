@@ -15,7 +15,7 @@ class CalendarsController < ApplicationController
   private
 
   def plan_params
-    params.require(:plan).permit(:date, :plan, :dayofweek)
+    params.require(:plan).permit(:date, :plan)
   end
 
   def getWeek
@@ -23,7 +23,6 @@ class CalendarsController < ApplicationController
 
     # Dateオブジェクトは、日付を保持しています。下記のように`.today.day`とすると、今日の日付を取得できます。
     @todays_date = Date.today
-    todays_wday = Date.today.wday
     # 例)　今日が2月1日の場合・・・ Date.today.day => 1日
 
     @week_days = []
@@ -32,14 +31,15 @@ class CalendarsController < ApplicationController
 
     7.times do |x|
       today_plans = []
+
       plans.each do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
-      count_wday = todays_wday + x
-      if count_wday >= 7
-        count_wday = count_wday - 7
+      wday_num = Date.today.wday + x
+      if wday_num >= 7
+        wday_num = wday_num - 7
       end
-      days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans, :dayofweek => wdays[count_wday]}
+      days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans, :wday => wdays[wday_num]}
       @week_days.push(days)
     end
 
